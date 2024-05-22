@@ -1,0 +1,47 @@
+
+
+
+//////////////5: Single Vote
+
+
+
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+
+contract Contract {
+	enum Choices { Yes, No }
+struct Vote {
+        Choices choice;
+        address voter;
+    }
+
+    Vote[] public votes;
+    mapping(address => bool) public hasVoted;
+
+    function createVote(Choices choice) external {
+        require(!hasVoted[msg.sender], "Already voted");
+        
+        Vote memory newVote = Vote(choice, msg.sender);
+        votes.push(newVote);
+        hasVoted[msg.sender] = true;
+    }
+
+    function getVoteByAddress(address voter) internal view returns (Vote memory) {
+        for (uint i = 0; i < votes.length; i++) {
+            if (votes[i].voter == voter) {
+                return votes[i];
+            }
+        }
+        revert("Vote not found");
+    }
+
+    function checkHasVoted(address voter) external view returns (bool) {
+        return hasVoted[voter];
+    }
+
+    function findChoice(address voter) external view returns (Choices) {
+        return getVoteByAddress(voter).choice;
+    }
+ 
+}
+

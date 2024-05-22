@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+
+contract Contract {
+     uint[5] public numbers; // Assuming numbers is a state variable
+
+    function sum(uint[5] memory _numbers) external pure returns (uint) {
+        uint total = 0;
+
+        // Loop through the temporary array
+        for (uint i = 0; i < _numbers.length; i++) {
+            total += _numbers[i];
+        }
+
+        return total;
+    }
+}

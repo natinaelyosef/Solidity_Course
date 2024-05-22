@@ -1,0 +1,36 @@
+
+
+
+/////////////3: Remove Member
+
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract Contract {
+ mapping(address => bool) public members;
+  address[] public memberList;
+
+    function addMember(address newMember) external {
+        require(!members[newMember], "Member already exists");
+        members[newMember] = true;
+        memberList.push(newMember);
+    }
+
+    function removeMember(address member) external {
+        require(members[member], "Member does not exist");
+        delete members[member];
+        for (uint256 i = 0; i < memberList.length; i++) {
+            if (memberList[i] == member) {
+                memberList[i] = memberList[memberList.length - 1];
+                memberList.pop();
+                break;
+            }
+        }
+    }
+
+    function isMember(address member) external view returns (bool) {
+        return members[member];
+    }
+}
+
